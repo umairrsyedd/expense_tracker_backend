@@ -17,19 +17,9 @@ Daily | Weekly | Monthly Data
 */
 const express = require("express");
 const router = express.Router();
-const Expense = require("../Models/ExpenseModel");
 router.get("/", (req, res) => {
   res.send("Expense Page");
 });
 
-router.post("/Create", (req, res) => {
-  let { Name, Amount, Category, Description } = req.body;
-  const newExpense = new Expense({
-    Name,
-    Amount,
-    Category,
-    Description,
-  });
-  newExpense.save();
-});
+router.post("/Create", (req, res) => {});
 module.exports = router;
