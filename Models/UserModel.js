@@ -28,7 +28,10 @@ const IncomeSchema = new Schema({
 const TransactionSchema = new Schema({
   TransactionType: String,
   TransactionName: String,
-  Date: Date,
+  Date: {
+    type: Date,
+    default: Date.now,
+  },
   CurrentBalance: Number,
 });
 
