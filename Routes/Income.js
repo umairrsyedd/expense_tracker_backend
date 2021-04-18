@@ -40,7 +40,7 @@ router.post("/Create", (req, res) => {
       });
     }
   );
-  res.send("Done");
+  res.sendStatus(200);
 });
 
 module.exports = router;
