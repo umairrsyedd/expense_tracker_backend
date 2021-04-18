@@ -19,7 +19,10 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.send("Income Page");
+  const { ID } = req.body;
+  User.findById(ID).then((value) => {
+    res.send(value.Incomes);
+  });
 });
 
 router.post("/Create", (req, res) => {

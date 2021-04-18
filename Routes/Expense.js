@@ -20,7 +20,10 @@ const router = express.Router();
 const User = require("../Models/UserModel.js");
 
 router.get("/", (req, res) => {
-  res.send("Expense Page");
+  const { ID } = req.body;
+  User.findById(ID).then((value) => {
+    res.send(value.Expenses);
+  });
 });
 
 router.post("/Create", (req, res) => {
