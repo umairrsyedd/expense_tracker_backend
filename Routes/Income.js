@@ -22,4 +22,22 @@ router.get("/", (req, res) => {
   res.send("Income Page");
 });
 
+router.post("/Create", (req, res) => {
+  const { ID, Category, Name, Amount, Note } = req.body;
+  let NewIncome = { Name, Amount, Category, Note };
+  let NewTransaction = { TransactionType: "Income", TransactionName: Name };
+  User.findByIdAndUpdate(ID, { $push: { Incomes: NewIncome } }).then(
+    (success) => {
+      NewBalance = Number(success.Balance) + Number(Amount);
+      NewTransaction.CurrentBalance = NewBalance;
+      User.findByIdAndUpdate(ID, {
+        $push: { Transactions: NewTransaction },
+      }).then(() => {
+        User.findByIdAndUpdate(ID, { Balance: NewBalance }).then();
+      });
+    }
+  );
+  res.send("Done");
+});
+
 module.exports = router;

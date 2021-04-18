@@ -3,14 +3,18 @@ const router = express.Router();
 const UserModel = require("../Models/UserModel.js");
 //Create A New User
 router.post("/Create", (req, res) => {
-  let { Name, Email, Balance } = req.body;
+  const { Name, Email, Balance } = req.body;
+  console.log(Balance);
   const NewUser = new UserModel({
     Name,
     Email,
-    IncomeCategory: [{ Name: "Sample", Color: "Blue" }],
+    Balance,
   });
-  NewUser.save();
-  res.send("Done");
+  NewUser.save()
+    .then((value) => {
+      res.send(value._id);
+    })
+    .catch((err) => console.log(err));
 });
 
 module.exports = router;
