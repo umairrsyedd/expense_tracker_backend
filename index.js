@@ -25,7 +25,7 @@ mongoose
   })
   .then(() => console.log("Database Connected Successfully"))
   .catch((err) => console.log(err));
-
+app.use(cors());
 app.get("/", (req, res) => {
   res.send("Server Index Page");
 });
