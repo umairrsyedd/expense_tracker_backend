@@ -4,6 +4,39 @@ const Schema = mongoose.Schema;
 const CategorySchema = new Schema({
   Name: String,
   Color: String,
+  Amount: {
+    type: Number,
+    default: 0,
+  },
+});
+const ExpenseSchema = new Schema({
+  Date: {
+    type: Date,
+    default: Date.now,
+  },
+  Category: String,
+  Name: String,
+  Amount: Number,
+  Note: String,
+});
+const IncomeSchema = new Schema({
+  Date: {
+    type: Date,
+    default: Date.now,
+  },
+  Category: String,
+  Name: String,
+  Amount: Number,
+  Note: String,
+});
+const TransactionSchema = new Schema({
+  TransactionType: String,
+  TransactionName: String,
+  Date: {
+    type: Date,
+    default: Date.now,
+  },
+  CurrentBalance: Number,
 });
 
 const UserSchema = new Schema({
@@ -25,9 +58,9 @@ const UserSchema = new Schema({
   },
   IncomeCategory: [CategorySchema],
   ExpenseCategory: [CategorySchema],
-  Transactions: mongoose.ObjectId,
-  Expenses: mongoose.ObjectId,
-  Incomes: mongoose.ObjectId,
+  Expenses: [ExpenseSchema],
+  Incomes: [IncomeSchema],
+  Transactions: [TransactionSchema],
 });
 
 module.exports = User = mongoose.model("Users", UserSchema);

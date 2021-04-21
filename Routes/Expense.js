@@ -17,19 +17,32 @@ Daily | Weekly | Monthly Data
 */
 const express = require("express");
 const router = express.Router();
-const Expense = require("../Models/ExpenseModel");
+const User = require("../Models/UserModel.js");
+
 router.get("/", (req, res) => {
-  res.send("Expense Page");
+  const { ID } = req.query;
+  User.findById(ID).then((value) => {
+    res.send(value.Expenses);
+  });
 });
 
 router.post("/Create", (req, res) => {
-  let { Name, Amount, Category, Description } = req.body;
-  const newExpense = new Expense({
-    Name,
-    Amount,
-    Category,
-    Description,
-  });
-  newExpense.save();
+  const { ExpenseCategory, Name, Amount, Note } = req.body;
+  const { ID } = req.query;
+  let NewExpense = { Name, Amount, ExpenseCategory, Note };
+  let NewTransaction = { TransactionType: "Expense", TransactionName: Name };
+  User.findByIdAndUpdate(ID, { $push: { Expenses: NewExpense } }).then(
+    (success) => {
+      NewBalance = Number(success.Balance) - Number(Amount);
+      NewTransaction.CurrentBalance = NewBalance;
+      User.findByIdAndUpdate(ID, {
+        $push: { Transactions: NewTransaction },
+      }).then(() => {
+        User.findByIdAndUpdate(ID, { Balance: NewBalance }).then();
+      });
+    }
+  );
+  res.sendStatus(200);
 });
+
 module.exports = router;
