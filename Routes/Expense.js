@@ -20,15 +20,16 @@ const router = express.Router();
 const User = require("../Models/UserModel.js");
 
 router.get("/", (req, res) => {
-  const { ID } = req.body;
+  const { ID } = req.query;
   User.findById(ID).then((value) => {
     res.send(value.Expenses);
   });
 });
 
 router.post("/Create", (req, res) => {
-  const { ID, Category, Name, Amount, Note } = req.body;
-  let NewExpense = { Name, Amount, Category, Note };
+  const { ExpenseCategory, Name, Amount, Note } = req.body;
+  const { ID } = req.query;
+  let NewExpense = { Name, Amount, ExpenseCategory, Note };
   let NewTransaction = { TransactionType: "Expense", TransactionName: Name };
   User.findByIdAndUpdate(ID, { $push: { Expenses: NewExpense } }).then(
     (success) => {
