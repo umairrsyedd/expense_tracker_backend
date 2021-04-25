@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
   res.send("Server Index Page");
 });
 app.use("/User", Users);
-app.use("/Expense", cors(), Expense); // Cross Origin Resource Sharing when Fetching From Font End react
+app.use("/Expense", cors(), Expense); // Cross Origin Resource Sharing when Fetching From Font End react~
 app.use("/Income", Income);
 app.use("/Balance", Balance);
 app.use("/Transactions", Transactions);

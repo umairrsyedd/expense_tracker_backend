@@ -1,11 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const UserModel = require("../Models/UserModel.js");
+const User = require("../Models/UserModel.js");
 //Create A New User
 router.post("/Create", (req, res) => {
   const { Name, Email, Balance } = req.body;
-  console.log(Balance);
-  const NewUser = new UserModel({
+  const NewUser = new User({
     Name,
     Email,
     Balance,
@@ -18,3 +17,15 @@ router.post("/Create", (req, res) => {
 });
 
 module.exports = router;
+
+router.get("/", (req, res) => {
+  const { Email } = req.query;
+  User.findOne({ Email })
+    .then((FoundUser) => {
+      // let UserDetails = { ID: FoundUser._id };
+      res.send(FoundUser._id);
+    })
+    .catch((error) => {
+      res.send("User Not Found");
+    });
+});

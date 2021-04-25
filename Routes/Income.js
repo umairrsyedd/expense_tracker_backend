@@ -25,6 +25,15 @@ router.get("/", (req, res) => {
     res.send(value.Incomes);
   });
 });
+router.get("/recent", (req, res) => {
+  const { ID } = req.query;
+  User.findById(ID).then((value) => {
+    Incomes = value.Incomes;
+    RecentIncomes = Incomes.slice(Math.max(Incomes.length - 5));
+    RecentIncomes.reverse();
+    res.send(RecentIncomes);
+  });
+});
 
 router.post("/Create", (req, res) => {
   const { IncomeCategory, Name, Amount, Note } = req.body;
