@@ -16,8 +16,6 @@ router.post("/Create", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-module.exports = router;
-
 router.get("/", (req, res) => {
   const { Email } = req.query;
   User.findOne({ Email })
@@ -29,3 +27,19 @@ router.get("/", (req, res) => {
       res.send("User Not Found");
     });
 });
+
+router.patch("/Balance", (req, res) => {
+  const { UserID } = req.query;
+  const filter = { _id: UserID };
+  const query = {
+    $set: {
+      Balance: 1090,
+    },
+  };
+
+  User.findOneAndUpdate(filter, query, () => {
+    console.log("Updated");
+  });
+});
+
+module.exports = router;
