@@ -25,6 +25,40 @@ router.get("/", (req, res) => {
     res.send(value.Expenses);
   });
 });
+
+router.patch("/Edit", (req, res) => {
+  let {
+    UserID,
+    ExpenseID,
+    OldName,
+    OldAmount,
+    OldCategory,
+    OldNote,
+    NewName,
+    NewAmount,
+    NewCategory,
+    NewNote,
+  } = req.body;
+  NewName === "" ? (NewName = OldName) : (NewName = NewName);
+  NewAmount === "" ? (NewAmount = OldAmount) : (NewAmount = NewAmount);
+  NewCategory === ""
+    ? (NewCategory = OldCategory)
+    : (NewCategory = NewCategory);
+  NewNote === "" ? (NewNote = OldNote) : (NewNote = NewNote);
+  const filter = { _id: UserID, "Expenses._id": ExpenseID }; // Where ExpenseID is the ID of the Object Inside the Array
+  const query = {
+    $set: {
+      "Expenses.$.Name": NewName,
+      "Expenses.$.Amount": NewAmount,
+      "Expenses.$.Category": NewCategory,
+      "Expenses.$.Note": NewNote,
+    },
+  };
+  User.findOneAndUpdate(filter, query)
+    .then((suc) => res.send("Done!"))
+    .catch((err) => res.send(err));
+});
+
 router.get("/recent", (req, res) => {
   const { ID } = req.query;
   User.findById(ID).then((value) => {
