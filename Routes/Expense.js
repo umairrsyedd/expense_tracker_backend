@@ -113,26 +113,23 @@ router.patch("/", (req, res) => {
     .catch((err) => res.send("Error While Updating"));
 });
 
-// Deletes An Expense
-router.delete("/", (req, res) => {
+// Deletes An Expense And Updates Balance
+router.delete("/", async (req, res) => {
   const { UserID, ExpenseID } = req.query;
+  const user = await User.findOne({ _id: UserID });
+  let OldBalance = user.Balance;
+  const ExpensesArray = user.Expenses;
+  ExpensesArray.forEach((expense) => {
+    if (expense._id == ExpenseID) {
+      OldBalance = OldBalance + expense.Amount;
+    }
+  });
   const query = {
     $pull: {
       Expenses: { _id: ExpenseID },
     },
+    Balance: OldBalance,
   };
-  User.findByIdAndUpdate(UserID, query)
-    .then((suc) => {
-      let Amount = 0;
-      suc.Expenses.forEach((item) => {
-        if (item._id === ExpenseID) {
-          Amount = item.Amount;
-        }
-      });
-      res.send(`${Amount}`);
-    })
-    .catch((err) => {
-      res.send("Reached Error Block");
-    });
+  await User.findByIdAndUpdate(UserID, query);
 });
 module.exports = router;

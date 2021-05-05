@@ -54,4 +54,22 @@ router.post("/Create", (req, res) => {
   res.sendStatus(200);
 });
 
+router.delete("/", async (req, res) => {
+  const { UserID, IncomeID } = req.query;
+  const user = await User.findOne({ _id: UserID });
+  let OldBalance = user.Balance;
+  const IncomesArray = user.Incomes;
+  IncomesArray.forEach((income) => {
+    if (income._id == IncomeID) {
+      OldBalance = OldBalance - income.Amount;
+    }
+  });
+  const query = {
+    $pull: {
+      Incomes: { _id: IncomeID },
+    },
+    Balance: OldBalance,
+  };
+  await User.findByIdAndUpdate(UserID, query);
+});
 module.exports = router;
