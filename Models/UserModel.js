@@ -4,10 +4,6 @@ const Schema = mongoose.Schema;
 const CategorySchema = new Schema({
   Name: String,
   Color: String,
-  Amount: {
-    type: Number,
-    default: 0,
-  },
 });
 const ExpenseSchema = new Schema({
   Date: {
